@@ -1,0 +1,346 @@
+/* General Styles */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #e6f0fa; /* Changed from #f4f7fa */
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+.navbar-brand {
+    font-weight: bold;
+    color: #2c3e50;
+    font-size: 1.5rem;
+}
+.nav-link {
+    color: #2c3e50;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+.nav-link:hover {
+    color: #3498db;
+}
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #3498db;
+}
+
+/* Main Content */
+.main-content {
+    padding: 2rem 0;
+    min-height: calc(100vh - 120px);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+.card-title {
+    color: #2c3e50;
+    font-weight: 600;
+}
+.card-text {
+    color: #555;
+}
+
+/* Doctor Cards */
+.doctor-card {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.doctor-card:hover {
+    background-color: #f1f1f1;
+}
+.doctor-card.selected {
+    background-color: #e6f0fa;
+    border: 2px solid #3498db;
+}
+.doctor-radio {
+    margin: 0;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: #3498db;
+    border-color: #3498db;
+    border-radius: 5px;
+    padding: 0.5rem 1.5rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+}
+.btn-primary:hover {
+    background-color: #2980b9;
+    border-color: #2980b9;
+}
+.btn-danger {
+    background-color: #e74c3c;
+    border-color: #e74c3c;
+    border-radius: 5px;
+}
+.btn-danger:hover {
+    background-color: #c0392b;
+    border-color: #c0392b;
+}
+.btn-sm {
+    padding: 0.25rem 0.75rem;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    border-radius: 5px;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #5a6268;
+}
+
+/* Forms */
+.form-label {
+    font-weight: 500;
+    color: #2c3e50;
+}
+.form-control {
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 0.75rem;
+    font-size: 1rem;
+}
+.form-control:focus {
+    border-color: #3498db;
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+.form-check-label {
+    color: #555;
+}
+
+/* Tables */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+.table thead {
+    background-color: #3498db;
+    color: white;
+}
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Footer */
+.footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+.footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    padding: 3rem 0;
+    background-color: transparent;
+    overflow: hidden;
+}
+
+/* Inner card for the hero section */
+.hero-card {
+    padding: 0;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure the row has no conflicting background from Bootstrap */
+.hero-card .row {
+    background: none;
+}
+
+/* Row inside the hero card with blue background */
+.hero-card .hero-row {
+    background: linear-gradient(to right, #3498db, #2980b9);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+/* Add padding to the columns inside hero-row for balance */
+.hero-row .col-md-6 {
+    padding: 1rem;
+}
+
+/* Adjust the image to reduce excessive space on the right */
+.hero-row .col-md-6 img {
+    max-width: 250px;
+}
+
+/* Adjust text colors for contrast on blue background */
+.hero-row h1 {
+    font-size: 2.5rem;
+    color: white;
+    margin-bottom: 1.5rem;
+}
+
+.hero-row p {
+    font-size: 1.25rem;
+    color: white;
+}
+
+/* Wave effect at the bottom */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: #e6f0fa; /* Changed from #f4f7fa */
+    clip-path: ellipse(70% 60% at 50% 100%);
+}
+
+/* Adjust the button color to contrast with the blue background */
+.hero-card .btn-primary {
+    background-color: #ffffff;
+    color: #3498db;
+    border-color: #ffffff;
+    font-weight: 600;
+}
+
+.hero-card .btn-primary:hover {
+    background-color: #f1f1f1;
+    color: #2980b9;
+    border-color: #f1f1f1;
+}
+
+/* Call-to-Action Buttons */
+.cta-button {
+    margin-top: 1rem;
+    padding: 0.75rem 2rem;
+    font-size: 1.1rem;
+}
+
+/* Modals */
+.modal-content {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+.modal-header {
+    background-color: #3498db;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.modal-title {
+    font-weight: 600;
+}
+.modal-body {
+    padding: 1.5rem;
+}
+.modal-footer {
+    border-top: none;
+    padding: 0.75rem 1.5rem;
+}
+#deleteRecordModal .modal-body p {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+#deleteRecordModal .modal-footer .btn {
+    padding: 0.5rem 1rem;
+}
+
+/* Accessibility Enhancements */
+:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+}
+.alert {
+    border-radius: 5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.25rem;
+    }
+    .hero-row h1 {
+        font-size: 2rem;
+    }
+    .hero-row p {
+        font-size: 1rem;
+    }
+    .hero-section::after {
+        height: 80px;
+    }
+    .hero-row .col-md-6 {
+        padding: 0.5rem;
+    }
+    .hero-row .col-md-6 img {
+        max-width: 200px;
+    }
+    .card {
+        margin-bottom: 1rem;
+    }
+    .doctor-card {
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Update to style the lists in the About section */
+.card-text ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 0;
+}
+
+.card-text li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+/* Style for the Contact section list */
+.contact-list {
+    list-style: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+.contact-list li {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.contact-list li strong {
+    color: #2c3e50;
+}
+
+.contact-list li a {
+    color: #3498db;
+    text-decoration: none;
+}
+
+.contact-list li a:hover {
+    color: #2980b9;
+    text-decoration: underline;
+}

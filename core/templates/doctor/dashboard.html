@@ -1,0 +1,261 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Doctor Dashboard{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex align-items-center mb-4">
+        {% if user.doctor_profile.profile_picture %}
+            <img src="{{ user.doctor_profile.profile_picture.url }}" class="profile-pic me-3" alt="{{ user.name }}">
+        {% else %}
+            <img src="{% static 'images/default_profile.png' %}" class="profile-pic me-3" alt="Default Profile">
+        {% endif %}
+        <h2 class="mb-0">Welcome, Dr. {{ user.name }}</h2>
+    </div>
+
+    <!-- Appointments Table -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="card-title mb-0">Appointments</h3>
+            <div class="d-flex gap-2">
+                <select class="form-select form-select-sm" id="statusFilter">
+                    <option value="all">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                </select>
+                <select class="form-select form-select-sm" id="sortBy">
+                    <option value="date">Sort by Date</option>
+                    <option value="patient">Sort by Patient</option>
+                    <option value="status">Sort by Status</option>
+                </select>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Patient</th>
+                            <th>Date</th>
+                            <th>Patient Email</th>
+                            <th>Health Issues</th>
+                            <th>Status</th>
+                            <th>Medical Records</th>
+                            <th>Estimated Cost</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointments %}
+                        <tr class="appointment-row"
+                            data-status="{{ appointment.status }}"
+                            data-date="{{ appointment.date|date:'Y-m-d H:i' }}"
+                            data-patient="{{ appointment.patient.name }}">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    {% if appointment.patient.patient_profile.profile_picture %}
+                                        <img src="{{ appointment.patient.patient_profile.profile_picture.url }}" class="profile-pic me-2" alt="{{ appointment.patient.name }}">
+                                    {% else %}
+                                        <img src="{% static 'images/default_profile.png' %}" class="profile-pic me-2" alt="Default Profile">
+                                    {% endif %}
+                                    {{ appointment.patient.name }}
+                                </div>
+                            </td>
+                            <td>{{ appointment.date|date:"Y-m-d H:i" }}</td>
+                            <td>{{ appointment.patient.email }}</td>
+                            <td>
+                                <button type="button" class="btn btn-link p-0" data-bs-toggle="modal"
+                                        data-bs-target="#healthIssuesModal"
+                                        data-description="{{ appointment.description|default:'No description provided' }}">
+                                    View Issues
+                                </button>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        {{ appointment.status|title }}
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item status-update" href="#" data-appointment-id="{{ appointment.id }}" data-status="pending">Pending</a></li>
+                                        <li><a class="dropdown-item status-update" href="#" data-appointment-id="{{ appointment.id }}" data-status="completed">Completed</a></li>
+                                    </ul>
+                                </div>
+                            </td>
+                            <td>
+                                {% if appointment.shared_records.all %}
+                                <div class="dropdown">
+                                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        View Records
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        {% for record in appointment.shared_records.all %}
+                                        <li>
+                                            <span class="dropdown-item-text">{{ record.upload_date|date:"Y-m-d" }} - {{ record.description|default:"Medical Record" }}</span>
+                                            <div class="dropdown-item">
+                                                <a href="{% url 'view_record' record.id %}" class="btn btn-sm btn-info me-2" target="_blank">View</a>
+                                                <a href="{% url 'download_record' record.id %}" class="btn btn-sm btn-secondary">Download</a>
+                                            </div>
+                                        </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                                {% else %}
+                                <span class="text-muted">No records</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if appointment.estimated_cost %}
+                                    ₹{{ appointment.estimated_cost|floatformat:2 }}
+                                {% else %}
+                                    Pending
+                                {% endif %}
+                            </td>
+                            <td>
+                                <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#estimateModal"
+                                        data-appointment-id="{{ appointment.id }}"
+                                        data-current-estimate="{{ appointment.estimated_cost|default:'' }}"
+                                        data-current-comment="{{ appointment.estimate_comment|default:'' }}">
+                                    Update Estimate
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="row">
+        <div class="col-md-4 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Appointments</h5>
+                    <p class="display-4">{{ appointments|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Estimates</h5>
+                    <p class="display-4">{{ pending_estimates }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Appointments</h5>
+                    <p class="display-4">{{ pending_appointments }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Update Estimate Modal -->
+<div class="modal fade" id="estimateModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Update Estimate</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'update_estimate' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="appointment_id" id="appointment_id">
+                    <div class="form-group mb-3">
+                        <label for="estimated_cost">Estimated Cost (₹):</label>
+                        <input type="number" step="0.01" name="estimated_cost" id="estimated_cost" class="form-control" required>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="estimate_comment">Comment:</label>
+                        <textarea name="estimate_comment" id="estimate_comment" class="form-control" rows="3" placeholder="Add any comments about the estimate (e.g., breakdown of costs, additional notes)"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Health Issues Modal -->
+<div class="modal fade" id="healthIssuesModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Patient Health Issues</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p id="healthIssuesText"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden Form for Status Update -->
+<form id="statusUpdateForm" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="appointment_id" id="statusAppointmentId">
+    <input type="hidden" name="status" id="statusValue">
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const estimateModal = document.getElementById('estimateModal');
+    estimateModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        document.getElementById('appointment_id').value = button.dataset.appointmentId || '';
+        document.getElementById('estimated_cost').value = button.dataset.currentEstimate || '';
+        document.getElementById('estimate_comment').value = button.dataset.currentComment || '';
+    });
+
+    document.querySelectorAll('.status-update').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.getElementById('statusAppointmentId').value = this.dataset.appointmentId;
+            document.getElementById('statusValue').value = this.dataset.status;
+            const form = document.getElementById('statusUpdateForm');
+            form.action = "{% url 'update_appointment_status' %}";
+            form.submit();
+        });
+    });
+
+    const healthIssuesModal = document.getElementById('healthIssuesModal');
+    healthIssuesModal.addEventListener('show.bs.modal', function(event) {
+        document.getElementById('healthIssuesText').textContent = event.relatedTarget.dataset.description;
+    });
+
+    const statusFilter = document.getElementById('statusFilter');
+    const sortBy = document.getElementById('sortBy');
+    const appointmentRows = document.querySelectorAll('.appointment-row');
+
+    function filterAndSortAppointments() {
+        const status = statusFilter.value;
+        const sort = sortBy.value;
+        const tbody = document.querySelector('tbody');
+        const rows = Array.from(appointmentRows);
+
+        rows.forEach(row => {
+            row.style.display = (status === 'all' || row.dataset.status === status) ? '' : 'none';
+        });
+
+        const visibleRows = rows.filter(row => row.style.display !== 'none');
+        visibleRows.sort((a, b) => {
+            const aValue = a.dataset[sort] || '';
+            const bValue = b.dataset[sort] || '';
+            return aValue.localeCompare(bValue);
+        });
+
+        visibleRows.forEach(row => tbody.appendChild(row));
+    }
+
+    statusFilter.addEventListener('change', filterAndSortAppointments);
+    sortBy.addEventListener('change', filterAndSortAppointments);
+});
+</script>
+{% endblock %}

@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% load static %}
+
+{% block title %}Home - Tele Medicine for Rural Areas{% endblock %}
+
+{% block content %}
+<!-- Hero Section Styled Like a Card -->
+<div class="hero-section">
+    <div class="container py-5">
+        <div class="card hero-card">
+            <div class="row align-items-center hero-row">
+                <div class="col-md-6 text-center text-md-start">
+                    <h1 class="display-4 mb-4">OPEN DOOR TO BETTER HEALTH</h1>
+                    <p class="lead mb-4">Full Body Check-Up At Your Home</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary cta-button">Book Appointment</a>
+                </div>
+                <div class="col-md-6 text-center">
+                    <img src="{% static 'images/stethoscope.png' %}" alt="Stethoscope" class="img-fluid" style="max-width: 300px;">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- About Section -->
+<div id="about" class="container py-5">
+    <h2 class="text-center mb-5">About</h2>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <img src="{% static 'images/patient.png' %}" alt="Patient" class="img-fluid mb-3" style="max-width: 150px;">
+                    <h3 class="card-title mb-4">For Patients</h3>
+                    <ul class="card-text">
+                        <li>Book appointments with specialists</li>
+                        <li>Upload and manage medical records</li>
+                        <li>View cost estimates</li>
+                        <li>Track your medical history</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <img src="{% static 'images/doctor.png' %}" alt="Doctor" class="img-fluid mb-3" style="max-width: 150px;">
+                    <h3 class="card-title mb-4">For Doctors</h3>
+                    <ul class="card-text">
+                        <li>Manage patient appointments</li>
+                        <li>Access patient medical records</li>
+                        <li>Provide cost estimates</li>
+                        <li>Connect with pharmacy services</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Contact Section -->
+<div id="contact" class="container py-5">
+    <h2 class="text-center mb-5">Contact Us</h2>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Get in Touch</h3>
+                    <ul class="card-text contact-list">
+                        <li><strong>Phone:</strong> +00 12334567890</li>
+                        <li><strong>Email:</strong> <a href="mailto:Telemedicine@gmail.com">Telemedicine@gmail.com</a></li>
+                        <li><strong>Address:</strong> Bengaluru</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+# Python
+*.pyc
+__pycache__/
+
+# Environment
+.env
+venv/
+*.sqlite3
+
+# Django Media
+/media/medical_records/
+/media/profile_pics/
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/

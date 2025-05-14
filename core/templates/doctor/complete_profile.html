@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Complete Doctor Profile{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Complete Your Profile</h2>
+    <p>Please provide the following details. Ensure height is in centimeters (cm), weight is in kilograms (kg), and age is in years.</p>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="{{ form.profile_picture.id_for_label }}" class="form-label">Profile Picture</label>
+            {{ form.profile_picture }}
+            {% if form.profile_picture.errors %}
+                <div class="text-danger">{{ form.profile_picture.errors }}</div>
+            {% endif %}
+            {% if form.instance.profile_picture %}
+                <div class="mt-2">
+                    <img src="{{ form.instance.profile_picture.url }}" class="profile-pic" alt="Current Profile Picture">
+                    <button type="submit" name="remove_profile_picture" value="1" class="btn btn-danger btn-sm mt-2">Remove</button>
+                </div>
+            {% else %}
+                <div class="mt-2">
+                    <img src="{% static 'images/default_profile.png' %}" class="profile-pic" alt="Default Profile Picture">
+                </div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.age.id_for_label }}" class="form-label">Age (years)</label>
+            {{ form.age }}
+            {% if form.age.errors %}
+                <div class="text-danger">{{ form.age.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.height.id_for_label }}" class="form-label">Height (cm)</label>
+            {{ form.height }}
+            {% if form.height.errors %}
+                <div class="text-danger">{{ form.height.errors }}</div>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="{{ form.weight.id_for_label }}" class="form-label">Weight (kg)</label>
+            {{ form.weight }}
+            {% if form.weight.errors %}
+                <div class="text-danger">{{ form.weight.errors }}</div>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-primary">Save Profile</button>
+    </form>
+</div>
+{% endblock %}

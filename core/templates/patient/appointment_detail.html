@@ -1,0 +1,57 @@
+{% extends "layout.html" %}
+{% load static %}
+{% block title %}Appointment Detail{% endblock %}
+{% block content %}
+<div class="container py-4">
+    <h2 class="mb-4">Appointment with Dr. {{ appointment.doctor.name }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Date:</strong> {{ appointment.date|date:"Y-m-d H:i" }}</p>
+            <p><strong>Description:</strong> {{ appointment.description|default:"No description provided" }}</p>
+            <p><strong>Status:</strong> {{ appointment.status|title }}</p>
+            <p><strong>Estimated Cost:</strong> 
+                {% if appointment.estimated_cost %}
+                    ₹{{ appointment.estimated_cost|floatformat:2 }}
+                {% else %}
+                    Pending
+                {% endif %}
+            </p>
+            {% if appointment.estimated_cost and appointment.estimate_comment %}
+            <p><strong>Comment:</strong> 
+                <span class="text-muted">{{ appointment.estimate_comment }}</span>
+            </p>
+            {% endif %}
+            <h5>Shared Medical Records</h5>
+            {% if appointment.shared_records.all %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in appointment.shared_records.all %}
+                        <tr>
+                            <td>{{ record.upload_date|date:"Y-m-d H:i" }}</td>
+                            <td>{{ record.description|default:"Medical Record" }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'view_record' record.id %}" class="btn btn-sm btn-info" target="_blank">View</a>
+                                    <a href="{% url 'download_record' record.id %}" class="btn btn-sm btn-secondary">Download</a>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p>No medical records shared for this appointment.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
