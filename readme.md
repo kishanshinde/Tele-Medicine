@@ -25,12 +25,13 @@ Follow these steps to run the project locally:
 
 6. Media Files
 Ensure the media directory exists for uploaded files (e.g., profile pictures, medical records). 
-media - profile_pics
-- medical_records
-
+* [media]
+   * [profile_pics]
+   * [medical_records]
 
 You can create it manually if it doesn't exist:
 `mkdir media` in your terminal
+`cd media` in your terminal
 `mkdir profile_pics` in your terminal
 `mkdir medical_records` in your terminal
 
