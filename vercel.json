@@ -2,22 +2,33 @@
   "version": 2,
   "builds": [
     {
-      "src": "api/index.py",
+      "src": "tele_project/wsgi.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "core/static/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "media/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/static/(.*)",
-      "dest": "core/static/$1"
+      "dest": "/core/static/$1"
     },
     {
       "src": "/media/(.*)",
-      "dest": "media/$1"
+      "dest": "/media/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "api/index.py"
+      "dest": "tele_project/wsgi.py"
     }
-  ]
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "tele_project.settings"
+  }
 }
