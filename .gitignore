@@ -8,8 +8,8 @@ venv/
 *.sqlite3
 
 # Django Media
-# /media/medical_records/
-# /media/profile_pics/
+/media/medical_records/
+/media/profile_pics/
 
 # OS Files
 .DS_Store
