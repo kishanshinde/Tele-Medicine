@@ -5,6 +5,10 @@
       "src": "manage.py",
       "use": "@vercel/python",
       "config": { "maxLambdaSize": "50mb" }
+    },
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python"
     }
   ],
   "routes": [
@@ -18,7 +22,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "manage.py"
+      "dest": "api/index.py"
     }
   ]
 }
